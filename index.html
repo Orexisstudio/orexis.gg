@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orexis — Indie Game Studio</title>
+  <meta name="description" content="Orexis is an indie game studio building games about transformation, discovery, and what emerges when separate forces meet." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300&family=Unbounded:wght@700;900&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #09080a;
+      --surface:   #100f11;
+      --border:    #1e1b20;
+      --text:      #ddd8d2;
+      --muted:     #6b6570;
+      --accent:    #b89a6e;
+      --pale:      #ccc8c2;
+      --glow:      rgba(184,154,110,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: clamp(3rem, 10vw, 8rem) clamp(2rem, 8vw, 7rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 55vw;
+      height: 55vw;
+      background: radial-gradient(ellipse at center, var(--glow) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .logo {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 900;
+      font-size: clamp(4rem, 14vw, 12rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--text);
+      position: relative;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .logo .x {
+      color: var(--accent);
+      display: inline-block;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both, pulse 4s ease-in-out 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 0px transparent; }
+      50%       { text-shadow: 0 0 40px rgba(184,154,110,0.35); }
+    }
+
+    .hero-divider {
+      width: 3rem;
+      height: 1px;
+      background: var(--accent);
+      margin: 2rem 0;
+      animation: expand 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    }
+
+    @keyframes expand {
+      from { width: 0; opacity: 0; }
+      to   { width: 3rem; opacity: 1; }
+    }
+
+    .hero-tagline {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--pale);
+      max-width: 38ch;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+    }
+
+    .hero-sub {
+      margin-top: 0.75rem;
+      font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: clamp(2rem, 8vw, 7rem);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
+    }
+
+    .scroll-hint::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 2.5rem;
+      background: linear-gradient(to bottom, transparent, var(--muted));
+      animation: drip 2s ease-in-out 2s infinite;
+    }
+
+    @keyframes drip {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      40%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      60%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: clamp(5rem, 12vw, 10rem) clamp(2rem, 8vw, 7rem);
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-heading {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--pale);
+    }
+
+    .about-heading em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .about-body {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .about-body p + p {
+      margin-top: 1.25rem;
+    }
+
+    /* ── GAMES ── */
+    .game-card {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease;
+    }
+
+    .game-card:hover {
+      border-color: var(--accent);
+    }
+
+    .game-card-visual {
+      background: var(--bg);
+      min-height: 28rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Generative plateau scene */
+    .plateau-scene {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+
+    .game-card-body {
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .game-status {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .game-status::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .game-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .game-desc {
+      font-family: 'Cormorant', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--pale);
+      line-height: 1.6;
+    }
+
+    .game-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem clamp(2rem, 8vw, 7rem);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .game-card  { grid-template-columns: 1fr; }
+      .game-card-visual { min-height: 16rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="logo">
+      OR<span class="x">E</span>XIS
+    </div>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">Games built on the premise that what combines becomes more than what was.</p>
+    <p class="hero-sub">Indie Game Studio</p>
+    <div class="scroll-hint">Scroll</div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">The Studio</p>
+    <div class="about-grid">
+      <div>
+        <h2 class="about-heading">We make games about <em>becoming.</em></h2>
+      </div>
+      <div class="about-body">
+        <p>Orexis is a solo indie studio building games where the act of combination is the heart of play. Not merging as a UI mechanic — but as a philosophy. Two things meet. Something new emerges that neither could have been alone.</p>
+        <p>Every game we make is built around that moment. The instant of transformation. The thing on the other side of it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games">
+    <p class="section-label">Games</p>
+    <div class="game-card">
+      <div class="game-card-visual">
+        <svg class="plateau-scene" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="sky" cx="50%" cy="30%" r="70%">
+              <stop offset="0%"   stop-color="#1a1520"/>
+              <stop offset="100%" stop-color="#09080a"/>
+            </radialGradient>
+            <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#b89a6e" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#b89a6e" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur1">
+              <feGaussianBlur stdDeviation="3"/>
+            </filter>
+            <filter id="blur2">
+              <feGaussianBlur stdDeviation="8"/>
+            </filter>
+          </defs>
+
+          <!-- Sky -->
+          <rect width="400" height="500" fill="url(#sky)"/>
+
+          <!-- Stars -->
+          <g fill="#ccc8c2" opacity="0.6">
+            <circle cx="45"  cy="40"  r="0.8"/>
+            <circle cx="120" cy="25"  r="0.6"/>
+            <circle cx="200" cy="55"  r="1"/>
+            <circle cx="310" cy="30"  r="0.7"/>
+            <circle cx="360" cy="70"  r="0.5"/>
+            <circle cx="80"  cy="90"  r="0.6"/>
+            <circle cx="270" cy="80"  r="0.8"/>
+            <circle cx="340" cy="110" r="0.5"/>
+            <circle cx="30"  cy="130" r="0.7"/>
+            <circle cx="160" cy="100" r="0.6"/>
+          </g>
+
+          <!-- Atmosphere glow beneath plateau -->
+          <ellipse cx="200" cy="310" rx="160" ry="40" fill="url(#glow1)" filter="url(#blur2)"/>
+
+          <!-- Plateau base shadow -->
+          <ellipse cx="200" cy="340" rx="130" ry="18" fill="#000" opacity="0.5" filter="url(#blur1)"/>
+
+          <!-- Plateau body -->
+          <path d="M70 330 Q80 380 200 390 Q320 380 330 330 Q310 295 200 290 Q90 295 70 330Z" fill="#1a1720"/>
+          <path d="M85 325 Q95 370 200 378 Q305 370 315 325 Q295 292 200 288 Q105 292 85 325Z" fill="#201d24"/>
+
+          <!-- Plateau top surface -->
+          <ellipse cx="200" cy="290" rx="115" ry="22" fill="#2a2630"/>
+          <ellipse cx="200" cy="288" rx="112" ry="20" fill="#252230"/>
+
+          <!-- Grid lines on plateau top -->
+          <g stroke="#3a3545" stroke-width="0.5" opacity="0.6">
+            <line x1="120" y1="283" x2="280" y2="283"/>
+            <line x1="110" y1="288" x2="290" y2="288"/>
+            <line x1="118" y1="293" x2="282" y2="293"/>
+            <line x1="155" y1="272" x2="145" y2="305"/>
+            <line x1="185" y1="270" x2="175" y2="308"/>
+            <line x1="215" y1="270" x2="205" y2="308"/>
+            <line x1="245" y1="272" x2="235" y2="305"/>
+          </g>
+
+          <!-- Structures: clean rectangular tiers, no roof triangles -->
+          <!-- Block A: squat wide base -->
+          <rect x="145" y="272" width="18" height="10" fill="#2e2a3a" rx="1"/>
+          <rect x="148" y="266" width="12" height="8"  fill="#38334a" rx="1"/>
+          <!-- lit top edge -->
+          <rect x="148" y="266" width="12" height="1"  fill="#524d6a" opacity="0.8"/>
+
+          <!-- Block B: medium -->
+          <rect x="168" y="268" width="16" height="14" fill="#353044" rx="1"/>
+          <rect x="171" y="261" width="10" height="9"  fill="#423d58" rx="1"/>
+          <rect x="171" y="261" width="10" height="1"  fill="#5e586e" opacity="0.8"/>
+          <!-- small window -->
+          <rect x="174" y="264" width="3" height="3"   fill="#b89a6e" opacity="0.5" rx="0.5"/>
+
+          <!-- Block C: tall narrow tower -->
+          <rect x="190" y="258" width="14" height="24" fill="#3c3750" rx="1"/>
+          <rect x="193" y="248" width="8"  height="12" fill="#4a4562" rx="1"/>
+          <rect x="193" y="248" width="8"  height="1"  fill="#6b6385" opacity="0.9"/>
+          <!-- window row -->
+          <rect x="195" y="253" width="3" height="3"   fill="#b89a6e" opacity="0.7" rx="0.5"/>
+          <rect x="195" y="253" width="3" height="3"   fill="#b89a6e" opacity="0.25" filter="url(#blur1)" rx="0.5"/>
+          <rect x="195" y="260" width="3" height="3"   fill="#b89a6e" opacity="0.4" rx="0.5"/>
+
+          <!-- Block D: tallest spire — pure rectangle, beacon on top -->
+          <rect x="210" y="252" width="12" height="30" fill="#46406080" rx="1"/>
+          <rect x="212" y="243" width="8"  height="12" fill="#524c6e" rx="1"/>
+          <rect x="212" y="243" width="8"  height="1"  fill="#7a7095" opacity="0.9"/>
+          <!-- beacon -->
+          <rect x="215" y="240" width="2" height="4"   fill="#b89a6e" opacity="0.95"/>
+          <circle cx="216" cy="240" r="4" fill="#b89a6e" opacity="0.18" filter="url(#blur1)"/>
+          <circle cx="216" cy="240" r="2" fill="#b89a6e" opacity="0.9"/>
+
+          <!-- Ascending particles from beacon -->
+          <g fill="#b89a6e">
+            <circle cx="216" cy="235" r="1.2" opacity="0.8">
+              <animate attributeName="cy" values="235;175;235" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.8;0;0.8" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="213" cy="215" r="0.7" opacity="0.5">
+              <animate attributeName="cy" values="215;160;215" dur="5.5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.5;0;0.5" dur="5.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="219" cy="225" r="0.5" opacity="0.4">
+              <animate attributeName="cy" values="225;168;225" dur="3.8s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.4;0;0.4" dur="3.8s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+
+          <!-- Clouds below -->
+          <ellipse cx="100" cy="400" rx="70" ry="18" fill="#131118" opacity="0.8"/>
+          <ellipse cx="320" cy="420" rx="80" ry="15" fill="#131118" opacity="0.7"/>
+          <ellipse cx="200" cy="440" rx="110" ry="20" fill="#100f14" opacity="0.9"/>
+
+          <!-- Void below -->
+          <rect x="0" y="430" width="400" height="70" fill="#09080a"/>
+        </svg>
+      </div>
+
+      <div class="game-card-body">
+        <p class="game-status">In Development</p>
+        <h3 class="game-title">Pale Ascent</h3>
+        <p class="game-desc">A civilization rises on a floating plateau. Buildings merge into greater forms. The sky above is not the limit — it is the destination.</p>
+        <p style="font-size:0.85rem; color:var(--muted); line-height:1.8;">A 2.5D merge-based civilization builder. Each run begins from nothing and ends, if you play it right, among the stars. Discover what your buildings become when they meet each other.</p>
+        <div class="game-tags">
+          <span class="tag">Civilization Builder</span>
+          <span class="tag">Merge</span>
+          <span class="tag">Roguelite</span>
+          <span class="tag">Godot</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">OR<span>E</span>XIS</div>
+    <p class="footer-copy">© 2026 Orexis. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
