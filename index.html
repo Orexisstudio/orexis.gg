@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orexis - Indie Game Studio</title>
+  <title>Orexis — Indie Game Studio</title>
   <meta name="description" content="Orexis is an indie game studio building games about transformation, discovery, and what emerges when separate forces meet." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -357,7 +357,7 @@
         <h2 class="about-heading">We make games about <em>becoming.</em></h2>
       </div>
       <div class="about-body">
-        <p>Orexis is a solo indie studio building games where the act of combination is the heart of play. Not merging as a UI mechanic but as a philosophy. Two things meet. Something new emerges that neither could have been alone.</p>
+        <p>Orexis is a solo indie studio building games where the act of combination is the heart of play. Not merging as a UI mechanic — but as a philosophy. Two things meet. Something new emerges that neither could have been alone.</p>
         <p>Every game we make is built around that moment. The instant of transformation. The thing on the other side of it.</p>
       </div>
     </div>
@@ -489,7 +489,7 @@
       <div class="game-card-body">
         <p class="game-status">In Development</p>
         <h3 class="game-title">Pale Ascent</h3>
-        <p class="game-desc">A civilization rises on a floating plateau. Buildings merge into greater forms. The sky above is not the limit. It is the destination.</p>
+        <p class="game-desc">A civilization rises on a floating plateau. Buildings merge into greater forms. The sky above is not the limit — it is the destination.</p>
         <p style="font-size:0.85rem; color:var(--muted); line-height:1.8;">A 2.5D merge-based civilization builder. Each run begins from nothing and ends, if you play it right, among the stars. Discover what your buildings become when they meet each other.</p>
         <div class="game-tags">
           <span class="tag">Civilization Builder</span>
@@ -500,6 +500,107 @@
       </div>
     </div>
   </section>
+
+  <!-- MAILING LIST -->
+  <section id="notify" style="border-top: 1px solid var(--border);">
+    <p class="section-label">Stay Informed</p>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+      <div>
+        <h2 class="about-heading" style="font-size: clamp(1.6rem, 3vw, 2.4rem);">Be first to know when <em>Pale Ascent</em> launches.</h2>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted); line-height: 1.9;">No spam. No frequency. Just a single email when the Kickstarter goes live — and occasional updates worth reading.</p>
+      </div>
+      <div class="ml-embed-wrapper">
+        <!-- MailerLite embed -->
+        <div id="mlb2-39440708" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-39440708">
+          <div class="ml-form-align-center">
+            <div class="ml-form-embedWrapper embedForm">
+              <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
+                <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2244211/forms/183825571894003087/subscribe" data-code="" method="post" target="_blank">
+                  <div class="ml-form-formContent">
+                    <div class="ml-form-fieldRow ml-last-item">
+                      <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                        <input aria-label="email" aria-required="true" type="email" class="form-control" data-inputmask="" name="fields[email]" placeholder="Your email address" autocomplete="email">
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" name="ml-submit" value="1">
+                  <div class="ml-form-embedSubmit">
+                    <button type="submit" class="primary">Notify Me</button>
+                    <button disabled="disabled" style="display:none;" type="button" class="loading">
+                      <div class="ml-form-embedSubmitLoad"></div>
+                      <span class="sr-only">Loading...</span>
+                    </button>
+                  </div>
+                  <input type="hidden" name="anticsrf" value="true">
+                </form>
+              </div>
+              <div class="ml-form-successBody row-success" style="display:none;">
+                <div class="ml-form-successContent">
+                  <p style="color: var(--accent); font-family: 'Cormorant', serif; font-size: 1.2rem; font-style: italic;">You're on the list. We'll be in touch.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Override MailerLite styles to match Orexis */
+    .ml-embed-wrapper .ml-form-embedContainer { background: transparent !important; }
+    .ml-embed-wrapper .ml-form-embedWrapper { background: transparent !important; width: 100% !important; max-width: 100% !important; }
+    .ml-embed-wrapper .ml-form-embedBody { padding: 0 !important; }
+    .ml-embed-wrapper .ml-form-fieldRow input {
+      background-color: transparent !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 0 !important;
+      color: var(--text) !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.85rem !important;
+      padding: 0.9rem 1rem !important;
+      width: 100% !important;
+      transition: border-color 0.3s ease;
+    }
+    .ml-embed-wrapper .ml-form-fieldRow input:focus {
+      outline: none;
+      border-color: var(--accent) !important;
+    }
+    .ml-embed-wrapper .ml-form-fieldRow input::placeholder { color: var(--muted) !important; }
+    .ml-embed-wrapper .ml-form-embedSubmit { margin: 0.75rem 0 0 0 !important; }
+    .ml-embed-wrapper .ml-form-embedSubmit button {
+      background-color: transparent !important;
+      border: 1px solid var(--accent) !important;
+      border-radius: 0 !important;
+      color: var(--accent) !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.75rem !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.2em !important;
+      text-transform: uppercase !important;
+      padding: 0.9rem 2rem !important;
+      width: 100% !important;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .ml-embed-wrapper .ml-form-embedSubmit button:hover {
+      background-color: var(--accent) !important;
+      color: var(--bg) !important;
+    }
+    @media (max-width: 768px) {
+      #notify > div { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+
+  <script>
+    function ml_webform_success_39440708() {
+      var $ = ml_jQuery || jQuery;
+      $('.ml-subscribe-form-39440708 .row-success').show();
+      $('.ml-subscribe-form-39440708 .row-form').hide();
+    }
+  </script>
+  <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v95037e5bac78f29ed026832ca21a7c7b" type="text/javascript"></script>
+  <script>fetch("https://assets.mailerlite.com/jsonp/2244211/forms/183825571894003087/takel")</script>
 
   <!-- FOOTER -->
   <footer>
